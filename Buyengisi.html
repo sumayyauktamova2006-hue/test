@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест по бухгалтерии</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 10px;
+  background: #f9f9f9;
+  color: #333;
+}
+h1 {
+  text-align: center;
+  font-size: 1.8em;
+}
+.question {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+}
+.answers label {
+  display: block;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.correct {
+  background-color: #c8e6c9;
+}
+.wrong {
+  background-color: #ffcdd2;
+}
+button {
+  padding: 12px;
+  width: 100%;
+  font-size: 1.1em;
+  background: #2196F3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+#result {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Тест по бухгалтерии</h1>
+<form id="quizForm"></form>
+<button onclick="checkAnswers()">Проверить</button>
+<div id="result"></div>
+
+<script>
+var questions = [
+  {
+    question: "Сальдо – это …",
+    options: ["остаток счета", "дебет счета", "оборот", "кредит счета"],
+    answer: 0
+  },
+  {
+    question: "Счета по учету фондов и капиталов …",
+    options: ["пассивные", "контрпассивные", "активные", "контрактивные"],
+    answer: 0
+  },
+  {
+    question: "Какой метод оценки ТМЗ не рекомендует МСФО?",
+    options: ["LIFO", "FIFO", "AVECO", "Специфическая идентификация"],
+    answer: 0
+  }
+];
+
+var quizForm = document.getElementById("quizForm");
+
+for (var i = 0; i < questions.length; i++) {
+  var q = questions[i];
+
+  var div = document.createElement("div");
+  div.className = "question";
+
+  var p = document.createElement("p");
+  p.innerHTML = "<b>Вопрос " + (i + 1) + ":</b> " + q.question;
+  div.appendChild(p);
+
+  var answersDiv = document.createElement("div");
+  answersDiv.className = "answers";
+
+  for (var j = 0; j < q.options.length; j++) {
+    var label = document.createElement("label");
+    label.innerHTML =
+      '<input type="radio" name="q' + i + '" value="' + j + '"> ' +
+      q.options[j];
+    answersDiv.appendChild(label);
+  }
+
+  div.appendChild(answersDiv);
+  quizForm.appendChild(div);
+}
+
+function checkAnswers() {
+  var score = 0;
+
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    var selected = document.querySelector('input[name="q' + i + '"]:checked');
+    var questionDiv = quizForm.children[i];
+    var labels = questionDiv.getElementsByTagName("label");
+
+    for (var j = 0; j < labels.length; j++) {
+      labels[j].className = "";
+      if (j === q.answer) labels[j].className = "correct";
+    }
+
+    if (selected) {
+      if (parseInt(selected.value) === q.answer) {
+        score++;
+      } else {
+        selected.parentElement.className = "wrong";
+      }
+    }
+  }
+
+  document.getElementById("result").innerHTML =
+    "Результат: " + score + " из " + questions.length;
+}
+</script>
+
+</body>
+</html>
